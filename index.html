@@ -3,6 +3,8 @@
     <head>
         <title>Chat - Customer Module</title>
         <link type="text/css" rel="stylesheet" href="style.css" />
+        <script src="http://code.jquery.com/jquery-latest.min.js"
+            type="text/javascript"></script>
     </head>
     <body>
         <div id="wrapper">
@@ -14,10 +16,40 @@
 
             <div id="chatbox"></div>
 
-            <form name="message" action="">
+            <div>
                 <input name="usermsg" type="text" id="usermsg" size="63" />
-                <input name="submitmsg" type="submit"  id="submitmsg" value="Send" />
-            </form>
+                <button onclick="test()">Send</button>
+            </div>
         </div>
+        <script>
+        function test(){
+          document.getElementById('chatbox').innerHTML += "<p>Vincent</p><br/><p>"+ document.getElementById('usermsg').value +"</p><br/>";
+        }
+
+        write = () => {
+          alert(1);
+          $.ajax({
+            url: 'test/send_message.php',
+            type: 'GET',
+            data: {userName:"test", message:document.getElementById('usermsg').value},
+            success: function(data) {
+                console.log(data); // Inspect this in your console
+                get();
+            }
+          });
+        }
+
+        function get(){
+          $.ajax({
+            url: 'test/get_message.php',
+            type: 'GET',
+            success: function(data) {
+                var test = data.split("\n");
+                var test2 = test.split(",");
+                document.getElementById('chatbox').innerHTML = "<p>" + test2[0] + "</p><br/><p>" + test2[1] + "</p>";
+            }
+          });
+        }
+        </script>
     </body>
 </html>
